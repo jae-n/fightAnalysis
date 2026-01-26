@@ -30,37 +30,63 @@ class StrikeAnalyzer:
         
         return False
 
-
+#inpromve 
 class TakedownAnalyzer:
     def __init__(self, height_diff_threshold=80):
         self.height_diff_threshold = height_diff_threshold
         self.last_takedown_frame = -100
         self.in_takedown = False
+        
 
-    def detect_takedown(self, prev_height, current_height, frame_count):
-        if prev_height is None or current_height is None:
+    def detect_takedown(self, att_head, def_head, att_body, def_body, frame_count):
+        # technique of a takedown
+        
+        #input check
+        if att_head is None or def_head is None or att_body is None or def_body is None:
             return False
 
-        # Cooldown: don't detect same takedown twice
+        # Cooldown: don't detect same takedown twice (30 frame cooldown)
         if frame_count - self.last_takedown_frame < 30:
             return False
-
-        height_diff = prev_height - current_height
         
-        # Only detect if there's a significant height drop
-        if height_diff > self.height_diff_threshold:
+        #level change
+        
+        level_change = att_head[1] < def_head[1]  
+        
+       
+        height_diff = def_head[1] - att_head[1]  
+        significant_level_change = height_diff > self.height_diff_threshold
+
+       #penertration
+        
+        body_distance = np.linalg.norm(
+            np.array(att_body) - np.array(def_body)
+        )
+        
+        
+        good_penetration = body_distance < 150  # 
+        
+        
+        defender_body_reasonable = def_body[1] > 0  # Valid position
+
+       #pressure
+        
+        distance_defender_head_to_body = np.linalg.norm(
+            np.array(def_head) - np.array(def_body)
+        )
+        
+        # gorund control
+        on_ground = distance_defender_head_to_body < 200
+        
+    
+        # count as a take down
+        if significant_level_change and good_penetration and on_ground:
             self.last_takedown_frame = frame_count
             return True
         
         return False
 
 
-class SubmissionAnalyzer:
-    def __init__(self, pressure_threshold=200):
-        self.pressure_threshold = pressure_threshold
-
-    def is_submission_attempt(self, pressure):
-        return pressure > self.pressure_threshold
 
 
 class KnockdownAnalyzer:
