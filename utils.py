@@ -6,6 +6,9 @@ class StrikeAnalyzer:
         self.velocity_threshold = velocity_threshold
         self.distance_threshold = distance_threshold
         self.last_strike_frame = -100  # Track last strike detection
+    #note will forget
+    #tracking the wrist find the velocity and distance to the opponent head
+    # if both conditions are met a strike is detected
 
     def detect_strike(self, prev_point, current_point, opponent_head, time_diff, frame_count):
         if prev_point is None or current_point is None or time_diff <= 0:
@@ -36,8 +39,8 @@ class TakedownAnalyzer:
         self.height_diff_threshold = height_diff_threshold
         self.last_takedown_frame = -100
         self.in_takedown = False
-        
-
+    # Tracking head and body positions of both fighters
+    # detect a takedown based on level change and penetration
     def detect_takedown(self, att_head, def_head, att_body, def_body, frame_count):
         # technique of a takedown
         
@@ -90,17 +93,30 @@ class TakedownAnalyzer:
 
 
 class KnockdownAnalyzer:
+    """Detects knockdowns based on body angle and height drop"""
+    
     def __init__(self, angle_threshold=60):
         self.angle_threshold = angle_threshold
         self.last_knockdown_frame = -100
 
-    def detect_knockdown(self, angle, frame_count):
-        # Cooldown: don't detect knockdowns too frequently
+    def detect_knockdown(self, angle, current_height, prev_height, frame_count):
+        #Track body angle and head height to detect knockdown
+        
+        # Input validation
+        if current_height is None or prev_height is None:
+            return False
+        
+        # Cooldown: 25 frames between knockdowns
         if frame_count - self.last_knockdown_frame < 25:
             return False
 
-        # Body angle must be very tilted (knocked down)
-        if angle > self.angle_threshold:
+        # Calculate height drop (positive = falling down)
+        height_drop = prev_height - current_height
+        
+        # Both conditions must be true:
+        # 1. Body tilted significantly (angle > 60°)
+        # 2. Head dropping fast (> 50 pixels)
+        if angle > self.angle_threshold and height_drop > 50:
             self.last_knockdown_frame = frame_count
             return True
         
