@@ -83,8 +83,10 @@ The first run will download `pose_landmarker_lite.task` automatically if it is n
 
 Here are some sample fights that can be analyzed with this project:
 
-- **Justin Gaethje vs Dustin Poirier** – A close MMA match with striking and grappling exchanges.
-- **Naoya Inoue vs Luis Nery** – A professional boxing match highlighting speed and precision.
+- **Justin Gaethje vs Dustin Poirier** – A close MMA match with striking and grappling exchanges. *Justin Gaethje is observed to win most of the time based on striking dominance.*  
+- **Naoya Inoue vs Luis Nery** – A professional boxing match highlighting speed and precision. *The outcome is mixed, with both fighters showing moments of dominance.*  
+- **Kaileb Round vs Jira Posziao** – Roundtree won by points, but Jira achieved a knockout in the same fight. *Shows how scoring and fight outcomes can differ depending on the criteria.*
+
 
 ## Limitations
 
