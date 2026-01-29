@@ -79,6 +79,13 @@ The first run will download `pose_landmarker_lite.task` automatically if it is n
 - If model download fails, try downloading `pose_landmarker_lite.task` manually and place it in the project root.
 
 ---
+## Example Fights
+
+Here are some sample fights that can be analyzed with this project:
+
+- **Justin Gaethje vs Dustin Poirier** – A close MMA match with striking and grappling exchanges.
+- **Naoya Inoue vs Luis Nery** – A professional boxing match highlighting speed and precision.
+
 ## Limitations
 
 - This project would benefit from an AI/ML model that can learn from fight data, as the scope of analyzing fights increases with understanding different fighting techniques.
